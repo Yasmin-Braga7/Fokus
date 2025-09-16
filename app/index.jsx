@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
+import { ActionButton } from "../components/ActionButton";
+import { FokusButton } from "../components/FokusButton";
+import { FokusTimer } from "../components/FokusTimer";
 
 const pomodoro = [
   {
@@ -24,24 +27,33 @@ const pomodoro = [
 
 export default function Index() {
 
-  const [timerType, setTimerType] = useState(pomodoro[1])
+  const [timerType, setTimerType] = useState(pomodoro[0])
 
   return (
     <View style={styles.container}>
       <Image source={timerType.image} />
       <View style={styles.actions}>
         <View style={styles.context}>
-
-          <Pressable style={styles.contextButtonActive}>
-            <Text style={styles.contextButtonText}>{timerType.display}</Text>
-          </Pressable>
+          {pomodoro.map(p =>
+            <ActionButton 
+              key={p.id}
+              active={timerType.id === p.id}
+              onPress={() => setTimerType(p)}
+              display={p.display}
+            
+            />
+          // <Pressable 
+          //   key={p.id} 
+          //   style={ timerType.id === p.id ? styles.contextButtonActive : null}
+          //   onPress={() => setTimerType(p)}
+          //   >
+          //   <Text style={styles.contextButtonText}>{p.display}</Text>
+          // </Pressable>
+          )}
 
         </View>
-
-        <Text style={styles.timer}>{timerType.initialValue}</Text>
-        <Pressable style={styles.button}>
-          <Text style={styles.buttonText}>Começar</Text>
-        </Pressable>
+        <FokusTimer />
+        <FokusButton />
       </View>
       <View style={styles.footer}>
         <Text style={styles.footerText}>
@@ -65,13 +77,12 @@ const styles = StyleSheet.create({
   },
   actions: {
     padding: 24,
-    backgroundColor: '#14448080',  //Foi adicionado 80 no final para mudar o tom para mais escuro
-
+    backgroundColor: '#14448080',
     borderRadius: 32,
     borderWidth: 2,
     borderColor: '#144480',
     width: '80%',
-    gap:32,  //Espaçamento entre os itens do actions
+    gap:32,
   },
   context:{
     flexDirection: "row",
@@ -93,16 +104,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
   },
-  button: {
-    backgroundColor: '#B872FF',
-    borderRadius: 32,
-    padding: 8,
-  },
-  buttonText: {
-    textAlign: "center",
-    color: '#021123',
-    fontSize: 18,
-  },
   footer: {
     width: '80%',
   },
@@ -112,3 +113,4 @@ const styles = StyleSheet.create({
     textAlign: "center",
   }
 })
+
